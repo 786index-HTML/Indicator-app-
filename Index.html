@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Market Indicator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<style>
+body {
+  margin: 0;
+  background: transparent;
+  font-family: Arial, sans-serif;
+}
+#popup {
+  position: fixed;
+  left: 10px;
+  top: 40%;
+  width: 220px;
+  background: #111;
+  color: #fff;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.6);
+  z-index: 999999;
+}
+.signal {
+  font-size: 22px;
+  font-weight: bold;
+  text-align: center;
+  margin: 10px 0;
+}
+.buy { color: #00ff88; }
+.sell { color: #ff4d4d; }
+.wait { color: #ffaa00; }
+.small {
+  font-size: 13px;
+  opacity: 0.8;
+  text-align: center;
+}
+button {
+  width: 100%;
+  padding: 10px;
+  background: #0066ff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="popup">
+  <div class="small">Trend</div>
+  <div id="trend" class="signal wait">WAIT</div>
+
+  <div class="small">Signal</div>
+  <div id="signal" class="signal wait">WAIT</div>
+
+  <button onclick="installApp()">Install Indicator</button>
+</div>
+
+<script>
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+});
+
+function installApp() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+  } else {
+    alert("Use Chrome menu → Add to Home Screen");
+  }
+}
+
+/* DEMO LOGIC (placeholder)
+   This will be replaced with real Dhan + Delta logic */
+setInterval(() => {
+  const r = Math.random();
+  const trend = document.getElementById("trend");
+  const signal = document.getElementById("signal");
+
+  if (r > 0.66) {
+    trend.innerHTML = "UP";
+    signal.innerHTML = "BUY";
+    trend.className = "signal buy";
+    signal.className = "signal buy";
+  } else if (r > 0.33) {
+    trend.innerHTML = "DOWN";
+    signal.innerHTML = "SELL";
+    trend.className = "signal sell";
+    signal.className = "signal sell";
+  } else {
+    trend.innerHTML = "RANGE";
+    signal.innerHTML = "WAIT";
+    trend.className = "signal wait";
+    signal.className = "signal wait";
+  }
+}, 3000);
+</script>
+
+</body>
+</html>
